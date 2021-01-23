@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b>Hellooooooo</b>
+    <b>{{ questionText }}</b>
   </div>
 </template>
 
@@ -8,22 +8,17 @@
 export default {
   name: "Question",
   props: {
+    questionText: String,
   },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-ul {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-li {
-  font-size: 40px;
-  padding: 0;
-  list-style-type: none;
-  margin: 10px;
+div {
+  overflow-wrap: break-word;
+  font-size: 20px;
+  height: 80px;
+  text-overflow: ellipsis;
 }
 </style>
