@@ -28,6 +28,7 @@ export default {
   },
   data() {
     return {
+      test: "",
       questionText: "😇:A very long example question to test text wrapping",
       sessionId: null,
       inClient: false,
@@ -67,7 +68,6 @@ export default {
       var newReactionKey = db.ref(`sessions/${this.sessionId}/reactions`).push()
         .key;
 
-      // Write the new post's data simultaneously in the posts list and the user's post list.
       var updates = {};
       updates[newReactionKey] = {
         reaction: reaction,
