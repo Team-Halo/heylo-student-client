@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- <web-cam /> -->
-    <button class="icon-button" v-on:click="isCameraOn = !isCameraOn">
+    <button class="icon-button" v-on:click="click">
       <img alt="camera" width="60" height="60" src="../assets/camera.png" />
       <span>{{ isCameraOn ? "On" : "Off" }}</span>
     </button>
@@ -18,10 +18,15 @@ export default {
   },
   data() {
     return {
-      isCameraOn: false,
+      isCameraOn: true,
     };
   },
-  methods: {},
+  methods: {
+    click() {
+      this.isCameraOn = !this.isCameraOn;
+      this.$emit('camera', this.isCameraOn);
+    }
+  },
 };
 </script>
 

@@ -1,10 +1,10 @@
 <template>
   <div id="app" @mouseenter="mouseenter" @mouseleave="mouseleave">
     <div id="grid">
-      <camera id="camera" />
+      <camera id="camera" @camera="camera" />
       <question
         id="question"
-        v-if="question.id"
+        v-if="question.id !== null"
         :questionText="question.text"
       />
       <emoji-bar id="emoji" @click="emojiClick" v-if="!sessionInit" />
@@ -48,6 +48,8 @@ export default {
     };
   },
   created() {
+    window.sleepy = this.sleepy;
+
     /* eslint-disable */
     if (typeof CefSharp != "undefined") {
       let ref = this;
@@ -71,6 +73,51 @@ export default {
     db.ref().update(updates);
   },
   methods: {
+    camera(on) {
+      if (!this.inClient) return;
+      if (on) {
+        heyloClient.turnOnCamera();
+      } else {
+        heyloClient.turnOffCamera();
+      }
+    },
+    sleepy() {
+      this.prompt("You look sleepy today!");
+    },
+    frowning() {
+      this.prompt("Finding it hard to catch up? Tell the teacher!");
+    },
+    happy() {
+      this.prompt("Enjoying the lesson? Give some feedback!");
+    },
+    async prompt(text) {
+      if (this.question.id !== null) return;
+      this.question.id = 0;
+      this.question.text = text;
+      if (this.inClient) {
+        heyloClient.increaseWidth();
+        await sleep(1000);
+        heyloClient.increaseHeight();
+      }
+      setTimeout(
+        async (id) => {
+          if (this.question.id === id) {
+            sendReaction("sleepy");
+            this.question.id = null;
+            this.question.text = null;
+            if (this.inClient) {
+              heyloClient.decreaseHeight();
+              if (!this.mousein) {
+                await sleep(1000);
+                heyloClient.decreaseWidth();
+              }
+            }
+          }
+        },
+        1000 * 60 * 2,
+        0
+      );
+    },
     connect(sessionId) {
       this.sessionId = sessionId;
       this.sessionInit = false;
@@ -135,12 +182,12 @@ export default {
     },
     mouseenter() {
       this.mousein = true;
-      if (this.inClient && !this.sessionInit && !this.question.id)
+      if (this.inClient && !this.sessionInit && this.question.id === null)
         heyloClient.increaseWidth();
     },
     mouseleave() {
       this.mousein = false;
-      if (this.inClient && !this.sessionInit && !this.question.id)
+      if (this.inClient && !this.sessionInit && this.question.id === null)
         heyloClient.decreaseWidth();
     },
     sendReaction(reaction) {
