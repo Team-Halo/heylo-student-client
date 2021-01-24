@@ -18,7 +18,7 @@ export default {
 div {
   overflow-wrap: break-word;
   font-size: 20px;
-  height: 80px;
   text-overflow: ellipsis;
+  overflow: hidden;
 }
 </style>
