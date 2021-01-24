@@ -1,7 +1,7 @@
 <template>
   <div>
     <button :class="bounce ? 'bounce' : null" @click="click">
-      <img :src="imgSrc" :alt="text" />
+      <img :src="require('../assets/' + imgSrc)" text="slower" :alt="text" />
     </button>
   </div>
 </template>
