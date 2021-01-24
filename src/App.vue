@@ -27,7 +27,7 @@ export default {
   },
   data() {
     return {
-      questionText: "😇:<question text>",
+      questionText: "😇:A very long example question to test text wrapping",
     };
   },
   methods: {},
@@ -35,25 +35,40 @@ export default {
 </script>
 
 <style scoped>
+* {
+  margin: 0px;
+  padding: 0px;
+}
 #app {
   font-family: "Lato", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 10px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 #grid {
   display: grid;
-  grid-template-columns: min-content 1fr;
-  grid-template-rows: min-content min-content;
+  grid-template-columns: min-content minmax(0px, 1fr);
+  grid-template-rows: minmax(0px, 1fr) min-content;
   grid-template-areas:
     "empty question"
     "camera emoji";
   width: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 #camera {
   grid-area: camera;
+  height: 100%;
+  z-index: 3;
 }
 #emoji {
   grid-area: emoji;
