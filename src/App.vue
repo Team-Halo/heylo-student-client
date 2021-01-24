@@ -7,12 +7,14 @@
         v-if="questionText"
         :questionText="questionText"
       />
+      {{ test }}
       <emoji-bar id="emoji" />
     </div>
   </div>
 </template>
 
 <script>
+import { db } from "./utils/firebase";
 import Camera from "./components/Camera.vue";
 import EmojiBar from "./components/EmojiBar.vue";
 import Question from "./components/Question.vue";
@@ -27,8 +29,12 @@ export default {
   },
   data() {
     return {
+      test: "",
       questionText: "😇:A very long example question to test text wrapping",
     };
+  },
+  firebase: {
+    test: db.ref("test"),
   },
   methods: {},
 };
