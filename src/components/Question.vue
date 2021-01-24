@@ -21,4 +21,8 @@ div {
   text-overflow: ellipsis;
   overflow: hidden;
 }
+div b {
+  display: block;
+  margin: 10px;
+}
 </style>
