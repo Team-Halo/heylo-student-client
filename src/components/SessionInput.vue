@@ -1,25 +1,31 @@
 <template>
-  <div>
-    <form novalidate class="md-layout" @submit.prevent="validateSession">
-      <div class="form-input">
-        <md-field class="input-area" :class="getValidationClass('sessionId')">
-          <label for="sessionId">Session ID</label>
-          <md-input name="sessionId" id="sessionId" v-model="form.sessionId" />
-          <span class="md-error" v-if="!$v.form.sessionId.required"
-            >The session ID cannot be empty</span
+  <div id="session-input">
+    <div class="inner">
+      <form novalidate class="md-layout" @submit.prevent="validateSession">
+        <div class="form-input">
+          <md-field class="input-area" :class="getValidationClass('sessionId')">
+            <label for="sessionId">Session ID</label>
+            <md-input
+              name="sessionId"
+              id="sessionId"
+              v-model="form.sessionId"
+            />
+            <span class="md-error" v-if="!$v.form.sessionId.required"
+              >The session ID cannot be empty</span
+            >
+            <span class="md-error" v-else-if="!$v.form.sessionId.maxLength"
+              >The session ID is too long</span
+            >
+            <span class="md-error" v-else-if="!$v.form.sessionId.minLength"
+              >The session ID is too short</span
+            >
+          </md-field>
+          <md-button type="submit" class="md-primary button-area"
+            >Connect</md-button
           >
-          <span class="md-error" v-else-if="!$v.form.sessionId.maxLength"
-            >The session ID is too long</span
-          >
-          <span class="md-error" v-else-if="!$v.form.sessionId.minLength"
-            >The session ID is too short</span
-          >
-        </md-field>
-        <md-button type="submit" class="md-primary button-area"
-          >Connect</md-button
-        >
-      </div>
-    </form>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -78,6 +84,14 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+#session-input {
+  width: 100%;
+  height: 40px;
+}
+.inner {
+  margin-left: 10px;
+  margin-right: 10px;
+}
 .form-input {
   display: grid;
   grid-template-columns: 1fr min-content;
@@ -89,5 +103,6 @@ export default {
 }
 .button-area {
   grid-area: button;
+  margin-top: 10px;
 }
 </style>

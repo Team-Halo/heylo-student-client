@@ -44,8 +44,9 @@ export default {
   created() {
     /* eslint-disable */
     if (typeof CefSharp != "undefined") {
+      let ref = this;
       (async function () {
-        this.inClient = true;
+        ref.inClient = true;
         await CefSharp.BindObjectAsync("heyloClient", "bound");
         heyloClient.increaseWidth();
         heyloClient.decreaseHeight();
@@ -71,10 +72,10 @@ export default {
       this.sessionInit = false;
     },
     mouseover() {
-      if (this.inClient) heyloClient.increaseWidth();
+      if (this.inClient && !this.sessionInit) heyloClient.increaseWidth();
     },
     mouseleave() {
-      if (this.inClient) heyloClient.decreaseWidth();
+      if (this.inClient && !this.sessionInit) heyloClient.decreaseWidth();
     },
     sendReaction(reaction) {
       var newReactionKey = db.ref(`sessions/${this.sessionId}/reactions`).push()
