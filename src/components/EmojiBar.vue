@@ -1,13 +1,11 @@
 <template>
   <div>
     <ul>
-      <li><emoji-button @click="click" text="⏪"></emoji-button></li>
-      <li><emoji-button @click="click" text="⏩"></emoji-button></li>
-      <li><emoji-button @click="click" text="💤"></emoji-button></li>
-      <li><emoji-button @click="click" text="❓"></emoji-button></li>
-      <li><emoji-button @click="click" text="👍"></emoji-button></li>
-      <li><emoji-button @click="click" text="❌"></emoji-button></li>
-      <li><emoji-button @click="click" text="✔"></emoji-button></li>
+      <li><emoji-button @click="click" imgSrc="../assets/arrows_left.svg" text="slower"></emoji-button></li>
+      <li><emoji-button @click="click" imgSrc="../assets/arrows_right.svg" text="faster"></emoji-button></li>
+      <li><emoji-button @click="click" imgSrc="../assets/interested.svg" text="interested"></emoji-button></li>
+      <li><emoji-button @click="click" imgSrc="../assets/sleepy.svg" text="sleepy"></emoji-button></li>
+      <li><emoji-button @click="click" imgSrc="../assets/confused.svg" text="confused"></emoji-button></li>
     </ul>
   </div>
 </template>

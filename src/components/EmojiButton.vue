@@ -1,6 +1,8 @@
 <template>
   <div>
-    <button :class="bounce ? 'bounce' : null" @click="click">{{ text }}</button>
+    <button :class="bounce ? 'bounce' : null" @click="click">
+      <img :src="imgSrc" :alt="text" />
+    </button>
   </div>
 </template>
 
@@ -9,8 +11,6 @@ export default {
   name: "EmojiButton",
   props: {
     imgSrc: String,
-
-    // change to use imgSrc instead when the assets are in
     text: String,
   },
   data() {
@@ -23,7 +23,7 @@ export default {
       this.bounce = true;
       setTimeout(() => (this.bounce = false), 1100);
 
-      this.$emit('click', this.text);
+      this.$emit("click", this.text);
     },
   },
 };
