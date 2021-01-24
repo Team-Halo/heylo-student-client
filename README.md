@@ -1,5 +1,9 @@
 # heylo-student-client
 
+## Webapp link
+
+https://team-halo.github.io/heylo-student-client/
+
 ## Project setup
 ```
 yarn install
