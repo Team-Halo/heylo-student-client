@@ -1,10 +1,10 @@
 <template>
   <div>
     <!-- <web-cam /> -->
-      <button class="icon-button" v-on:click="isCameraOn = !isCameraOn">
-        <img alt="camera" width="80" height="80" src="../assets/camera.png" />
-        <span>{{ isCameraOn ? "On" : "Off" }}</span>
-      </button>
+    <button class="icon-button" v-on:click="isCameraOn = !isCameraOn">
+      <img alt="camera" width="60" height="60" src="../assets/camera.png" />
+      <span>{{ isCameraOn ? "On" : "Off" }}</span>
+    </button>
   </div>
 </template>
 
@@ -35,8 +35,8 @@ export default {
   outline: none;
   background-color: white;
   transition: background-color 0.5s;
-  border-radius: 5px;
   height: 100%;
+  width: 120px;
 }
 
 .icon-button:hover {
@@ -44,7 +44,7 @@ export default {
 }
 
 div span {
-  font-size: 40px;
+  font-size: 30px;
   font-weight: bold;
 }
 </style>

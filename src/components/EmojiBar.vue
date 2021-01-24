@@ -1,13 +1,13 @@
 <template>
   <div>
     <ul>
-      <li><emoji-button text="⏪"></emoji-button></li>
-      <li><emoji-button text="⏩"></emoji-button></li>
-      <li><emoji-button text="💤"></emoji-button></li>
-      <li><emoji-button text="❓"></emoji-button></li>
-      <li><emoji-button text="👍"></emoji-button></li>
-      <li><emoji-button text="❌"></emoji-button></li>
-      <li><emoji-button text="✔"></emoji-button></li>
+      <li><emoji-button @click="click" text="⏪"></emoji-button></li>
+      <li><emoji-button @click="click" text="⏩"></emoji-button></li>
+      <li><emoji-button @click="click" text="💤"></emoji-button></li>
+      <li><emoji-button @click="click" text="❓"></emoji-button></li>
+      <li><emoji-button @click="click" text="👍"></emoji-button></li>
+      <li><emoji-button @click="click" text="❌"></emoji-button></li>
+      <li><emoji-button @click="click" text="✔"></emoji-button></li>
     </ul>
   </div>
 </template>
@@ -18,6 +18,11 @@ export default {
   name: "EmojiBar",
   components: {
     EmojiButton,
+  },
+  methods: {
+    click(text) {
+      this.$emit("click", text);
+    },
   },
 };
 </script>
@@ -30,11 +35,12 @@ ul {
   flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
-  height: 70px;
-  min-height: 70px;
+  height: 40px;
+  min-height: 40px;
 }
 li {
   padding: 0;
   list-style-type: none;
+  margin: 5px;
 }
 </style>

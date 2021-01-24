@@ -22,6 +22,8 @@ export default {
     click() {
       this.bounce = true;
       setTimeout(() => (this.bounce = false), 1100);
+
+      this.$emit('click', this.text);
     },
   },
 };
@@ -52,12 +54,12 @@ export default {
   }
 }
 button {
-  font-size: 30px;
+  font-size: 20px;
   background: white;
   transition: transform 0.5s;
   border: 0px solid transparent;
-  width: 60px;
-  height: 60px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   text-align: center;
   vertical-align: center;
