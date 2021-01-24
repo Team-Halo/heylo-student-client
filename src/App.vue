@@ -91,6 +91,7 @@ export default {
       this.prompt("Enjoying the lesson? Give some feedback!");
     },
     async prompt(text) {
+      if (this.sessionInit) return;
       if (this.question.id !== null) return;
       this.question.id = 0;
       this.question.text = text;
