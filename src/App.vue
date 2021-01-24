@@ -28,7 +28,6 @@ export default {
   },
   data() {
     return {
-      test: "",
       questionText: "😇:A very long example question to test text wrapping",
       sessionId: null,
       inClient: false,
