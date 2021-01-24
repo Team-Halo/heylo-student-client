@@ -7,7 +7,12 @@
         v-if="questionText"
         :questionText="questionText"
       />
-      <emoji-bar id="emoji" @click="emojiClick" />
+      <emoji-bar id="emoji" @click="emojiClick" v-if="!sessionInit" />
+      <session-input
+        id="input"
+        v-if="sessionInit"
+        @session="connect"
+      ></session-input>
     </div>
   </div>
 </template>
@@ -16,6 +21,7 @@
 import Camera from "./components/Camera.vue";
 import EmojiBar from "./components/EmojiBar.vue";
 import Question from "./components/Question.vue";
+import SessionInput from "./components/SessionInput.vue";
 import db from "./firebase.js";
 // import consts from "./consts";
 
@@ -25,11 +31,13 @@ export default {
     EmojiBar,
     Camera,
     Question,
+    SessionInput,
   },
   data() {
     return {
       questionText: "😇:A very long example question to test text wrapping",
       sessionId: null,
+      sessionInit: true,
       inClient: false,
     };
   },
@@ -39,11 +47,12 @@ export default {
       (async function () {
         this.inClient = true;
         await CefSharp.BindObjectAsync("heyloClient", "bound");
-        heyloClient.decreaseWidth();
+        heyloClient.increaseWidth();
         heyloClient.decreaseHeight();
       })();
     }
 
+    // TODO: remove
     var newSessionId = db.ref().child("sessions").push().key;
     this.sessionId = newSessionId;
 
@@ -57,6 +66,10 @@ export default {
     this.sendReaction("connect");
   },
   methods: {
+    connect(sessionId) {
+      this.sessionId = sessionId;
+      this.sessionInit = false;
+    },
     mouseover() {
       if (this.inClient) heyloClient.increaseWidth();
     },
@@ -123,5 +136,8 @@ export default {
 }
 #question {
   grid-area: question;
+}
+#input {
+  grid-area: emoji;
 }
 </style>
