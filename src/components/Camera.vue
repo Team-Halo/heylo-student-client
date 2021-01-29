@@ -1,21 +1,17 @@
 <template>
   <div>
-    <!-- <web-cam /> -->
     <button class="icon-button" v-on:click="click">
-      <img alt="camera" width="60" height="60" src="../assets/camera.png" />
+      <img alt="camera" width="60" height="60" src="../assets/camera.png"/>
       <span>{{ isCameraOn ? "On" : "Off" }}</span>
     </button>
   </div>
 </template>
 
 <script>
-// import { WebCam } from "vue-web-cam";
 
 export default {
   name: "Camera",
-  components: {
-    // WebCam,
-  },
+  components: {},
   data() {
     return {
       isCameraOn: true,

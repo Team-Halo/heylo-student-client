@@ -1,17 +1,18 @@
 <template>
   <div id="app" @mouseenter="mouseenter" @mouseleave="mouseleave">
+    <vue-web-cam ref="webcam" :selectFirstDevice="true"/>
     <div id="grid">
-      <camera id="camera" @camera="camera" />
+      <camera id="camera" @camera="camera"/>
       <question
-        id="question"
-        v-if="question.id !== null"
-        :questionText="question.text"
+          id="question"
+          v-if="question.id !== null"
+          :questionText="question.text"
       />
-      <emoji-bar id="emoji" @click="emojiClick" v-if="!sessionInit" />
+      <emoji-bar id="emoji" @click="emojiClick" v-if="!sessionInit"/>
       <session-input
-        id="input"
-        v-if="sessionInit"
-        @session="connect"
+          id="input"
+          v-if="sessionInit"
+          @session="connect"
       ></session-input>
     </div>
   </div>
@@ -24,7 +25,7 @@ import Question from "./components/Question.vue";
 import SessionInput from "./components/SessionInput.vue";
 import db from "./firebase.js";
 import consts from "./consts.js";
-import { sleep } from "./utils.js";
+import {sleep} from "./utils.js";
 
 export default {
   name: "App",
@@ -45,6 +46,7 @@ export default {
       sessionInit: true,
       inClient: false,
       mousein: false,
+      cameraOn: true,
     };
   },
   created() {
@@ -74,12 +76,8 @@ export default {
   },
   methods: {
     camera(on) {
-      if (!this.inClient) return;
-      if (on) {
-        heyloClient.turnOnCamera();
-      } else {
-        heyloClient.turnOffCamera();
-      }
+      this.cameraOn = on;
+      console.log(this.$refs.webcam.capture());
     },
     sleepy() {
       this.prompt("You look sleepy today!");
@@ -101,22 +99,22 @@ export default {
         heyloClient.increaseHeight();
       }
       setTimeout(
-        async (id) => {
-          if (this.question.id === id) {
-            sendReaction("sleepy");
-            this.question.id = null;
-            this.question.text = null;
-            if (this.inClient) {
-              heyloClient.decreaseHeight();
-              if (!this.mousein) {
-                await sleep(1000);
-                heyloClient.decreaseWidth();
+          async (id) => {
+            if (this.question.id === id) {
+              sendReaction("sleepy");
+              this.question.id = null;
+              this.question.text = null;
+              if (this.inClient) {
+                heyloClient.decreaseHeight();
+                if (!this.mousein) {
+                  await sleep(1000);
+                  heyloClient.decreaseWidth();
+                }
               }
             }
-          }
-        },
-        1000 * 60 * 2,
-        0
+          },
+          1000 * 60 * 2,
+          0
       );
     },
     connect(sessionId) {
@@ -159,22 +157,22 @@ export default {
                 heyloClient.increaseHeight();
               }
               setTimeout(
-                async (id) => {
-                  if (this.question.id === id) {
-                    this.sendReaction("idle");
-                    this.question.id = null;
-                    this.question.text = null;
-                    if (this.inClient) {
-                      heyloClient.decreaseHeight();
-                      if (!this.mousein) {
-                        await sleep(1000);
-                        heyloClient.decreaseWidth();
+                  async (id) => {
+                    if (this.question.id === id) {
+                      this.sendReaction("idle");
+                      this.question.id = null;
+                      this.question.text = null;
+                      if (this.inClient) {
+                        heyloClient.decreaseHeight();
+                        if (!this.mousein) {
+                          await sleep(1000);
+                          heyloClient.decreaseWidth();
+                        }
                       }
                     }
-                  }
-                },
-                1000 * 60 * 2,
-                questionId
+                  },
+                  1000 * 60 * 2,
+                  questionId
               );
             }
           }
@@ -193,7 +191,7 @@ export default {
     },
     sendReaction(reaction) {
       var newReactionKey = db.ref(`sessions/${this.sessionId}/reactions`).push()
-        .key;
+          .key;
 
       var updates = {};
       updates[newReactionKey] = {
@@ -228,6 +226,7 @@ export default {
   margin: 0px;
   padding: 0px;
 }
+
 #app {
   font-family: "Lato", sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -240,6 +239,7 @@ export default {
   left: 0;
   right: 0;
 }
+
 #grid {
   display: grid;
   grid-template-columns: min-content minmax(0px, 1fr);
@@ -254,17 +254,21 @@ export default {
   left: 0;
   right: 0;
 }
+
 #camera {
   grid-area: camera;
   height: 100%;
   z-index: 3;
 }
+
 #emoji {
   grid-area: emoji;
 }
+
 #question {
   grid-area: question;
 }
+
 #input {
   grid-area: emoji;
 }

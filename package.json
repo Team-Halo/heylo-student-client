@@ -8,6 +8,8 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@tensorflow-models/face-landmarks-detection": "^0.0.2",
+    "@tensorflow/tfjs": "^3.0.0",
     "core-js": "^3.6.5",
     "firebase": "^8.2.4",
     "vue": "^2.6.11",
