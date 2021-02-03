@@ -1,6 +1,7 @@
 <template>
   <div id="app" @mouseenter="mouseenter" @mouseleave="mouseleave">
-    <vue-web-cam ref="webcam" :selectFirstDevice="true"/>
+    <video hidden ref="videoInput" width="640" height="480"></video>
+    <canvas id="canvasOutput"></canvas>
     <div id="grid">
       <camera id="camera" @camera="camera"/>
       <question
@@ -26,6 +27,15 @@ import SessionInput from "./components/SessionInput.vue";
 import db from "./firebase.js";
 import consts from "./consts.js";
 import {sleep} from "./utils.js";
+import cvUtils from "@opencv.js/utils";
+
+let src;
+let dst;
+let gray;
+let cap;
+let faces;
+let classifier;
+const FPS = 30;
 
 export default {
   name: "App",
@@ -74,20 +84,89 @@ export default {
 
     db.ref().update(updates);
   },
+  mounted() {
+    this.$loadScript("https://docs.opencv.org/master/opencv.js")
+        .then(() => {
+          cv.onRuntimeInitialized = () => {
+            let video = this.$refs.videoInput;
+            navigator.mediaDevices.getUserMedia({video: true, audio: false})
+                .then((stream) => {
+                  video.srcObject = stream;
+                  video.play();
+                })
+                .catch(e => console.log("Get user media failed ", err));
+            this.initializeVideo(video);
+
+            setTimeout(this.processVideo, 0);
+          };
+
+        })
+        .catch(e => {
+          console.log('OpenCV Script load failed', e);
+        });
+  },
   methods: {
+    initializeVideo(video) {
+      src = new cv.Mat(video.height, video.width, cv.CV_8UC4);
+      dst = new cv.Mat(video.height, video.width, cv.CV_8UC4);
+      gray = new cv.Mat();
+      cap = new cv.VideoCapture(video);
+      faces = new cv.RectVector();
+      classifier = new cv.CascadeClassifier();
+      classifier.load(require('./assets/haarcascade_frontalface_default.xml'));
+    },
+    processVideo() {
+      try {
+        if (!this.cameraOn) {
+          // clean and stop.
+          src.delete();
+          dst.delete();
+          gray.delete();
+          faces.delete();
+          classifier.delete();
+          return;
+        }
+        let begin = Date.now();
+        // start processing.
+        cap.read(src);
+        src.copyTo(dst);
+        cv.cvtColor(dst, gray, cv.COLOR_RGBA2GRAY, 0);
+        // detect faces.
+        classifier.detectMultiScale(gray, faces, 1.1, 3, 0);
+        // draw faces.
+        for (let i = 0; i < faces.size(); ++i) {
+          let face = faces.get(i);
+          let point1 = new cv.Point(face.x, face.y);
+          let point2 = new cv.Point(face.x + face.width, face.y + face.height);
+          cv.rectangle(dst, point1, point2, [255, 0, 0, 255]);
+        }
+        cv.imshow('canvasOutput', dst);
+        // schedule the next one.
+        let delay = 1000 / FPS - (Date.now() - begin);
+        setTimeout(this.processVideo, delay);
+      } catch (err) {
+        cvUtils.printError(err);
+      }
+    }
+    ,
     camera(on) {
       this.cameraOn = on;
-      console.log(this.$refs.webcam.capture());
-    },
+      this.initializeVideo(this.$refs.video);
+      setTimeout(this.processVideo, 0);
+    }
+    ,
     sleepy() {
       this.prompt("You look sleepy today!");
-    },
+    }
+    ,
     frowning() {
       this.prompt("Finding it hard to catch up? Tell the teacher!");
-    },
+    }
+    ,
     happy() {
       this.prompt("Enjoying the lesson? Give some feedback!");
-    },
+    }
+    ,
     async prompt(text) {
       if (this.sessionInit) return;
       if (this.question.id !== null) return;
@@ -116,7 +195,8 @@ export default {
           1000 * 60 * 2,
           0
       );
-    },
+    }
+    ,
     connect(sessionId) {
       this.sessionId = sessionId;
       this.sessionInit = false;
@@ -126,7 +206,8 @@ export default {
         const data = snapshot.val();
         this.onQuestionUpdate(data);
       });
-    },
+    }
+    ,
     async onQuestionUpdate(data) {
       let now = +new Date();
       if (this.question.id) {
@@ -178,17 +259,20 @@ export default {
           }
         }
       }
-    },
+    }
+    ,
     mouseenter() {
       this.mousein = true;
       if (this.inClient && !this.sessionInit && this.question.id === null)
         heyloClient.increaseWidth();
-    },
+    }
+    ,
     mouseleave() {
       this.mousein = false;
       if (this.inClient && !this.sessionInit && this.question.id === null)
         heyloClient.decreaseWidth();
-    },
+    }
+    ,
     sendReaction(reaction) {
       var newReactionKey = db.ref(`sessions/${this.sessionId}/reactions`).push()
           .key;
@@ -201,7 +285,8 @@ export default {
       };
 
       db.ref(`sessions/${this.sessionId}/reactions/`).update(updates);
-    },
+    }
+    ,
     async emojiClick(text) {
       this.sendReaction(text);
       if (this.question.id) {
@@ -216,9 +301,11 @@ export default {
           }
         }
       }
-    },
+    }
+    ,
   },
-};
+}
+;
 </script>
 
 <style scoped>

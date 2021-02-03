@@ -1141,6 +1141,16 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
+"@opencv.js/utils@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@opencv.js/utils/-/utils-1.1.0.tgz#ed6c0b0e871d819e4b39b4456ed3911569c37889"
+  integrity sha512-shZApOFoo9nVVHrImKNXGECfOGNvG6kvtqHZjVx5W/k3UBQDpUSo6Q56Y9+KNvC4Ykp3IWhzBmnoKhICVJm3oQ==
+
+"@opencv.js/wasm@^4.4.0":
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/@opencv.js/wasm/-/wasm-4.4.0.tgz#d1a814f239525404352ae4d5b4ea01ab8c6e2d2f"
+  integrity sha512-DIWKYISMxe2UvrYPSeb4l4fiDg1ONifPKgxP8ytToJeH6frZkdab/sM1b6SVJ/UxVnxQOYOM4A3NaKU/iPrNIA==
+
 "@protobufjs/aspromise@^1.1.1", "@protobufjs/aspromise@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@protobufjs/aspromise/-/aspromise-1.1.2.tgz#9b8b0cc663d669a7d8f6f5d0893a14d348f30fbf"
@@ -8760,6 +8770,11 @@ vue-material@^1.0.0-beta-15:
     vue-github-button "^1.2.0"
     vue-github-buttons "^3.1.0"
     vue-toc "0.0.1"
+
+vue-plugin-load-script@^1.3.2:
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/vue-plugin-load-script/-/vue-plugin-load-script-1.3.2.tgz#348515d261205bb76d5b9285968e7e53539bbdb6"
+  integrity sha512-UQcFanuWBf72/339LxgsPZbMsT5LKUjBzkQfV3xf4ni5fc6Nnx5GNYclODFaQ9FHtOjWhu423bhHrlBHz4MIFg==
 
 vue-style-loader@^4.1.0, vue-style-loader@^4.1.2:
   version "4.1.2"
